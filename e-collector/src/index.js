@@ -6,6 +6,7 @@ import './framework/foundation-rtl.min.css';
 import './css/app.css';
 import Routes from './LandingPage/routes'
 
+
 class Index extends React.Component {
 
     constructor(props){
