@@ -1,6 +1,18 @@
 /* classe basique */
-.textalign-center{
+.global{
 	text-align:center;
+	margin-left:10%;
+	margin-right:10%;
+}
+
+#monImg{
+	width: 300px;
+	margin-bottom: 3%;
+margin-top: 3%;
+}
+
+.global p{
+	text-align:left!important;
 }
 
 .sticky-topbar {
