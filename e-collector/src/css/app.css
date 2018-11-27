@@ -1,0 +1,249 @@
+/* classe basique */
+.textalign-center{
+	text-align:center;
+}
+
+.sticky-topbar {
+  width: 100%;
+}
+
+.featured-image-block-grid-header {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.featured-image-block {
+  margin-bottom: 20px;
+}
+
+.featured-image-block .featured-image-block-title {
+  font-weight: 600;
+  margin-top: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1em;
+  color: #404040;
+}
+
+.featured-image-block a:hover p {
+  color: #1779ba;
+}
+
+
+.marketing-site-footer {
+  background: #2c3840;
+  color: #8aa0ae;
+  padding: 2rem 0 0;
+}
+
+.marketing-site-footer .marketing-site-footer-menu-social a {
+  color: #fefefe;
+}
+
+.marketing-site-footer .column-block {
+  margin-bottom: 30px;
+}
+
+.marketing-site-footer > .row {
+  margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 39.9375em) {
+  .marketing-site-footer .columns {
+    margin-bottom: 2rem;
+  }
+}
+
+.marketing-site-footer-name {
+  color: #fefefe;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+}
+
+.marketing-site-footer-title {
+  color: #fefefe;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.marketing-site-footer-block {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.marketing-site-footer-block .fa {
+  font-size: 2rem;
+  color: #020304;
+}
+
+.marketing-site-footer-block p {
+  margin-left: 1rem;
+  line-height: 1.125rem;
+}
+
+.marketing-site-footer-bottom {
+  background: #020304;
+  padding: 1rem 0;
+}
+
+.marketing-site-footer-bottom p,
+.marketing-site-footer-bottom .menu {
+  margin-bottom: 0;
+}
+
+.marketing-site-footer-bottom .marketing-site-footer-bottom-links {
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.marketing-site-footer-bottom .marketing-site-footer-bottom-links a {
+  color: #8aa0ae;
+}
+
+@media screen and (max-width: 63.9375em) {
+  .marketing-site-footer-bottom .marketing-site-footer-bottom-links {
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+}
+
+@media screen and (max-width: 63.9375em) {
+  .marketing-site-footer-bottom {
+    text-align: center;
+  }
+}
+
+a img{
+  border-radius: 50%;
+  width: 160px;
+  height: 160px;
+  margin-left:20%;
+}
+
+.connect{
+  width: 10%;
+  height: 10%;
+  position : relative;
+  margin: 0;
+  padding: 0;
+
+}
+
+
+/* Image page principal */
+
+.hero-section {
+  background: url("../img/header/les-meilleurs-voyants.jpg") 50% no-repeat;
+  background-size: cover;
+  height: 35vh;
+  text-align: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.hero-section .hero-section-text {
+  color: #fefefe;
+  text-shadow: 1px 1px 2px #0a0a0a;
+}
+
+.imgPreview{
+  text-align: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  height: 200px;
+  width: 500px;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  border-top: 5px solid gray;
+  border-bottom: 5px solid gray;
+}
+
+.imgPreview2{
+  text-align: center;
+  margin: 5px 15px;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  border-top: 5px solid gray;
+  border-bottom: 5px solid gray;
+}
+
+.modifier-image{
+  margin: 5px 15px;
+  height: 40px;
+  width: 40px;
+}
+.descriptionMedium{
+  min-height: 200px;
+  min-width: 400px;
+} 
+
+/* Chat */
+#margintopandbot{
+	margin-top: 30px; 
+	margin-bottom: 30px;
+} 
+
+#background-img-chat{
+	background-image:url("../img/header/les-meilleurs-voyants.jpg");
+	padding-top: 1px;
+	padding-bottom: 1px;
+}
+
+/* modal*/
+
+.avatar-image{
+	border-radius: 50%;
+	width: 160px;
+	height: 160px;
+}
+
+.author-title{
+	text-align: center;
+	margin-top: 20px;
+	line-height: 1.5;
+	font-size: xx-large;
+}
+
+.profile-card-avatar{
+	text-align: center;
+}
+
+/* Text medium */
+
+#text-align-center{
+	text-align:center;
+	margin-top: 10px;
+}
+
+/* modal entête*/
+#enteteboutton{
+	margin:auto;
+	display:block;
+}
+
+/* modal co modif */
+
+#bouttonmodifmodal{
+	text-align:center;
+}
+
+.button.disabled{
+	margin-right: 12%;
+	float: left;
+}
+
+.changeValue{
+  background-color: orange;
+  text-align: center;
+}
