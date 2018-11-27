@@ -1,9 +1,17 @@
 import React from 'react';
+import Select from 'react-select';
 
 
 export default class Header extends React.Component {
 
+
+
     render(){
+        const options = [
+            { value: 'site1', label: 'Jardin des Arènes de Cimiez' },
+            { value: 'site2', label: 'Autre lieu' },
+            { value: 'site3', label: 'Va te faire' }
+        ];
 
         let header=()=>{
             const customer = <div className="hero-section-text">
@@ -16,6 +24,12 @@ export default class Header extends React.Component {
         let listmenu=()=>{
             const customer =<ul className="dropdown menu" data-dropdown-menu>
                 <li className="menu-text"><a href="/">E-Collect</a></li>
+                <li className={"menu-text"}>
+                    <a href={"/client"}>Jardin des Arènes de Cimiez</a>
+                </li>
+                <li className={"menu-text"}>
+                    <a href={"/client"}>Autre Lieu</a>
+                </li>
             </ul>;
             return customer;
         };
