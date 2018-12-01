@@ -9,6 +9,8 @@ import {Doughnut} from 'react-chartjs-2';
 import {Line} from 'react-chartjs-2';
 import Select from 'react-select';
 import {Bar} from 'react-chartjs-2';
+import Pagination from 'rc-pagination';
+import 'rc-pagination/assets/index.css';
 
 
 const PoubelleGraph = ({ text }) => <div style={PoubelleStyle}> {text}</div>;
@@ -39,16 +41,16 @@ const options = [
 const ZoneDeTrie = ({nom,nbPoubellesDansZoneDeTrie,dataPie,dataLine})=><div>
     <p><strong>{nom}</strong> Statistiques : </p>
     <p>Nombre de poubelles dans la zone de trie: <strong>{nbPoubellesDansZoneDeTrie}</strong></p>
-    <div style={{display:"flex"}}>
-        <div style={{ height: '60vh', width: '50%' }}>
-            <Doughnut data={dataPie} width={200}
+    <div style={{display:"inline"}}>
+        <div>
+            <Doughnut data={dataPie} width={300}
                       height={100}/>
         </div>
-        <div style={{ height: '60vh', width: '50%' }}>
+        <div style={{marginLeft:"10px"}}>
             <Select
                 options={options}
             />
-            <Line data={dataLine} />
+            <Line data={dataLine} width={400} />
         </div>
     </div>
 </div>  ;
@@ -56,14 +58,15 @@ const ZoneDeTrie = ({nom,nbPoubellesDansZoneDeTrie,dataPie,dataLine})=><div>
 const ZoneInfluence = ({nom,nbPoubellesDansZone,dataBar})=><div>
     <p><strong>{nom}</strong> Statisques connues : </p>
     <p>Nombre de poubelles dans la zone : <strong>{nbPoubellesDansZone}</strong></p>
-    <Bar
-        data={dataBar}
-        width={600}
-        height={25}
-        options={{
-            maintainAspectRatio: false
-        }}
-    />
+        <Bar
+            data={dataBar}
+            width={600}
+            height={10}
+            options={{
+                maintainAspectRatio: false
+            }}
+            style={{MarginLeft:"10px"}}
+        />
 </div>;
 
 function getRandomInt (min, max) {
@@ -150,7 +153,12 @@ export default class Client extends React.Component {
         this.state = {
            pie: getState(),
             line: initialState,
-            bar:dataBar
+            bar:dataBar,
+            menu : {
+               poubelle : true,
+                trie:false,
+                afluance:false
+            }
         };
     }
 
@@ -166,10 +174,10 @@ export default class Client extends React.Component {
         let _this = this;
 
         setInterval(function(){
-            var oldDataSet = _this.state.line.datasets[0];
-            var newData = [];
+            let oldDataSet = _this.state.line.datasets[0];
+            let newData = [];
 
-            for(var x=0; x< _this.state.line.labels.length; x++){
+            for(let x=0; x< _this.state.line.labels.length; x++){
                 newData.push(Math.floor(Math.random() * 100));
             }
 
@@ -188,7 +196,149 @@ export default class Client extends React.Component {
         }, 5000);
     }
 
+    _onChangeMenu(string){
+        let info=null;
+        switch (string) {
+            case "trie":
+                info =  {
+                poubelle : false,
+                    trie:true,
+                    afluance:false
+                };
+                break;
+            case "afluance":
+                info =  {
+                    poubelle : false,
+                    trie:false,
+                    afluance:true
+                };
+                break;
+            default:
+                info =  {
+                    poubelle : true,
+                    trie:false,
+                    afluance:false
+                };
+                break;
+        }
+        this.setState({
+           menu:info
+        });
+    }
+
     render(){
+
+        let color = (boolean) =>{
+            if(boolean){
+                return "black";
+            }else{
+                return ""
+            }
+        };
+
+        const menu = () =>{
+          return  <div className="top-bar">
+              <ul className="dropdown menu" data-dropdown-menu>
+                  <li className="menu-text">
+                      <a onClick={()=>this._onChangeMenu("poubelle")} style={{color:color(this.state.menu.poubelle)}}>Poubelles</a>
+                  </li>
+                  <li className={"menu-text"}>
+                      <a onClick={()=>this._onChangeMenu("trie")} style={{color:color(this.state.menu.trie)}}>Tries</a>
+                  </li>
+                  <li className={"menu-text"}>
+                      <a onClick={()=>this._onChangeMenu("afluance")} style={{color:color(this.state.menu.afluance)}}>Afluances</a>
+                  </li>
+              </ul>
+          </div>;
+        };
+
+        const poubellesInfo = <div>
+                <h3>Les Poubelles : </h3>
+                <Poubelle
+                    nom={"P1"}
+                    directionPhrase={"se dirige vers Z3"}
+                    battery={100}
+                    charge={25}
+                />
+                <Poubelle
+                    nom={"P2"}
+                    directionPhrase={"s'occupe de Z1"}
+                    battery={80}
+                    charge={50}
+                />
+                <Poubelle
+                    nom={"P3"}
+                    directionPhrase={"s'occupe de Z2"}
+                    battery={20}
+                    charge={75}
+                />
+                <Poubelle
+                    nom={"P4"}
+                    directionPhrase={"se vide et se charge"}
+                    isCharging={true}
+                    battery={50}
+                    charge={100}
+                />
+                <Poubelle
+                    nom={"P5"}
+                    directionPhrase={"suit un parcours prédéfinis"}
+                    battery={30}
+                    charge={25}
+                />
+                <div style={{textAlign:"center"}}>
+                    <Pagination total={25} />;
+                </div>
+            </div>;
+
+        const triesInfo  =<div>
+
+            <ZoneDeTrie
+                nom={"T1"}
+                nbPoubellesDansZoneDeTrie={1}
+                dataPie={this.state.pie}
+                dataLine={this.state.line}
+            />
+            <div style={{textAlign:"center"}}>
+                <Pagination total={25} />;
+            </div>
+        </div> ;
+
+        const afluancesInfo =
+            <div>
+                <ZoneInfluence
+                    nom={"Z1"}
+                    nbPoubellesDansZone={1}
+                    dataBar={this.state.bar}
+
+                />
+                <ZoneInfluence
+                    nom={"Z2"}
+                    nbPoubellesDansZone={1}
+                    dataBar={this.state.bar}
+
+                />
+                <div style={{textAlign:"center"}}>
+                    <Pagination total={25} />;
+                </div>
+                <ZoneInfluence
+                    nom={"Z3"}
+                    nbPoubellesDansZone={0}
+                    dataBar={this.state.bar}
+
+                />
+            </div>;
+
+        const affichageInfo = () =>{
+          let retour;
+          if(this.state.menu.poubelle) {
+            retour=poubellesInfo;
+          }else if (this.state.menu.trie){
+            retour = triesInfo;
+          }else{
+              retour = afluancesInfo;
+          }
+          return retour;
+        };
 
 
         return (
@@ -205,21 +355,21 @@ export default class Client extends React.Component {
                             <ZoneInfluenceGraph
                                 lat={43.71995511362731}
                                 lng={7.276731660849009}
-                                text={'Z1'}
+                                text={'A1'}
                                 diametre={100}
                             />
 
                             <ZoneInfluenceGraph
                                 lat={43.720105641533365}
                                 lng={7.277928739864365}
-                                text={'Z2'}
+                                text={'A2'}
                                 diametre={40}
                             />
 
                             <ZoneInfluenceGraph
                                 lat={43.72058731928579}
                                 lng={7.277028112987523}
-                                text={'Z3'}
+                                text={'A3'}
                                 diametre={60}
                             />
 
@@ -264,71 +414,8 @@ export default class Client extends React.Component {
                         </GoogleMapReact>
                     </div>
                     <div style={{ height: '80vh', width: '40%', textAlign:"center" }}>
-                        <h3>Les Poubelles : </h3>
-                        <Poubelle
-                            nom={"P1"}
-                            directionPhrase={"se dirige vers Z3"}
-                            battery={100}
-                            charge={25}
-                        />
-                        <Poubelle
-                            nom={"P2"}
-                            directionPhrase={"s'occupe de Z1"}
-                            battery={80}
-                            charge={50}
-                        />
-                        <Poubelle
-                            nom={"P3"}
-                            directionPhrase={"s'occupe de Z2"}
-                            battery={20}
-                            charge={75}
-                        />
-                        <Poubelle
-                            nom={"P4"}
-                            directionPhrase={"se vide et se charge"}
-                            isCharging={true}
-                            battery={50}
-                            charge={100}
-                        />
-                        <Poubelle
-                            nom={"P5"}
-                            directionPhrase={"suit un parcours prédéfinis"}
-                            battery={30}
-                            charge={25}
-                        />
-                    </div>
-
-                </div>
-                <div style={{textAlign:"center"}}>
-                    <div>
-                        <h3 >Les zones de tries : </h3>
-                        <ZoneDeTrie
-                            nom={"T1"}
-                            nbPoubellesDansZoneDeTrie={1}
-                            dataPie={this.state.pie}
-                            dataLine={this.state.line}
-                        />
-                    </div>
-                    <div>
-                        <h3 >Les zones d'affluences (actuelles) : </h3>
-                        <ZoneInfluence
-                            nom={"Z1"}
-                            nbPoubellesDansZone={1}
-                            dataBar={this.state.bar}
-
-                        />
-                        <ZoneInfluence
-                            nom={"Z2"}
-                            nbPoubellesDansZone={1}
-                            dataBar={this.state.bar}
-
-                        />
-                        <ZoneInfluence
-                            nom={"Z3"}
-                            nbPoubellesDansZone={0}
-                            dataBar={this.state.bar}
-
-                        />
+                        {menu()}
+                        {affichageInfo()}
                     </div>
                 </div>
             </div>
