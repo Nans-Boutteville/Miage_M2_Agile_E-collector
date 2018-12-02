@@ -13,6 +13,7 @@ import Pagination from 'rc-pagination';
 import 'rc-pagination/assets/index.css';
 
 
+
 const PoubelleGraph = ({ text }) => <div style={PoubelleStyle}> {text}</div>;
 const ZoneInfluenceGraph= ({ text, diametre}) => <div style={ZoneInfluStyle(diametre)}> {text}</div>;
 const ZoneDeTrieGraph= ({ text}) => <div style={ZoneDeTrieStyle}> {text}</div>;
@@ -151,14 +152,14 @@ export default class Client extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-           pie: getState(),
-            line: initialState,
-            bar:dataBar,
             menu : {
-               poubelle : true,
+                poubelle : true,
                 trie:false,
                 afluance:false
-            }
+        },
+           pie: getState(),
+            line: initialState,
+            bar:dataBar
         };
     }
 
@@ -195,6 +196,122 @@ export default class Client extends React.Component {
             _this.setState({line:line});
         }, 5000);
     }
+
+
+    /*
+    TODO transfromation pour l'automatisation
+     */
+
+
+
+    listPoubelle(){return [
+        {
+            nom:"P1",
+            direction:"se dirige vers Z3",
+            battery :100,
+            charge:25,
+            isCharging:false,
+            map : {
+                lat:43.71989225310265,
+                long:7.275623913033314,
+            }
+        },{
+            nom:"P2",
+            direction:"s'occupe de Z1",
+            battery :80,
+            charge:50,
+            isCharging:false,
+            map : {
+                lat:43.7199628471185,
+                long:7.276885068490628,
+            }
+        },{
+            nom:"P3",
+            direction:"s'occupe de Z2",
+            battery :20,
+            charge:75,
+            isCharging:false,
+            map : {
+                lat:43.72002391515392,
+                long:7.278003658367197,
+            }
+        },{
+            nom:"P4",
+            direction:"se vide et se charge",
+            battery :50,
+            charge:100,
+            isCharging:true,
+            map : {
+                lat:43.72076565945867,
+                long:7.277072369436269,
+            }
+        },{
+            nom:"P5",
+            direction:"suit un parcours prédéfinis",
+            battery :30,
+            charge:25,
+            isCharging:false,
+            map : {
+                lat:43.72038439661712,
+                long:7.277138044431808,
+            }
+        }
+    ];}
+
+
+    listZoneTrie(){ return [
+        {
+            nom:"T1",
+            nbPoubelleDansZone:1,
+            dataPie:this.state.pie,
+            dataLine:this.state.line,
+            graph:{
+                lat:43.72076565945867,
+                long:7.277072369436269
+            }
+        }
+    ];}
+
+
+    listZoneAfluance(){
+        return [
+            {
+                nom:"A1",
+                nbPoubelleDansZone:1,
+                dataBar:this.state.bar,
+                graph : {
+                    lat:43.71995511362731,
+                    long:7.276731660849009,
+                    diametre:100
+                }
+            },
+            {
+                nom:"A2",
+                nbPoubelleDansZone:1,
+                dataBar:this.state.bar,
+                graph : {
+                    lat:43.720105641533365,
+                    long:7.277928739864365,
+                    diametre:40
+                }
+            },
+            {
+                nom:"A3",
+                nbPoubelleDansZone:0,
+                dataBar:this.state.bar,
+                graph : {
+                    lat:43.72058731928579,
+                    long:7.277028112987523,
+                    diametre:60
+                }
+            },
+        ];
+    }
+
+    /*
+    TODO finish
+     */
+
 
     _onChangeMenu(string){
         let info=null;
@@ -252,90 +369,46 @@ export default class Client extends React.Component {
           </div>;
         };
 
-        const poubellesInfo = <div>
-                <h3>Les Poubelles : </h3>
+        const poubellesInfo = this.listPoubelle().map(poubelle => (
                 <Poubelle
-                    nom={"P1"}
-                    directionPhrase={"se dirige vers Z3"}
-                    battery={100}
-                    charge={25}
+                    nom={poubelle.nom}
+                    directionPhrase={poubelle.direction}
+                    battery={poubelle.battery}
+                    charge={poubelle.charge}
                 />
-                <Poubelle
-                    nom={"P2"}
-                    directionPhrase={"s'occupe de Z1"}
-                    battery={80}
-                    charge={50}
-                />
-                <Poubelle
-                    nom={"P3"}
-                    directionPhrase={"s'occupe de Z2"}
-                    battery={20}
-                    charge={75}
-                />
-                <Poubelle
-                    nom={"P4"}
-                    directionPhrase={"se vide et se charge"}
-                    isCharging={true}
-                    battery={50}
-                    charge={100}
-                />
-                <Poubelle
-                    nom={"P5"}
-                    directionPhrase={"suit un parcours prédéfinis"}
-                    battery={30}
-                    charge={25}
-                />
-                <div style={{textAlign:"center"}}>
-                    <Pagination total={25} />;
-                </div>
-            </div>;
+            ));
 
-        const triesInfo  =<div>
+        const triesInfo  = this.listZoneTrie().map(trie => (
+                <ZoneDeTrie
+                    nom={trie.nom}
+                    nbPoubellesDansZoneDeTrie={trie.nbPoubelleDansZone}
+                    dataPie={trie.dataPie}
+                    dataLine={trie.dataLine}
+                />
+            ));
 
-            <ZoneDeTrie
-                nom={"T1"}
-                nbPoubellesDansZoneDeTrie={1}
-                dataPie={this.state.pie}
-                dataLine={this.state.line}
-            />
-            <div style={{textAlign:"center"}}>
-                <Pagination total={25} />;
-            </div>
-        </div> ;
-
-        const afluancesInfo =
-            <div>
+        const afluancesInfo = this.listZoneAfluance().map(zoneAfluence =>(
                 <ZoneInfluence
-                    nom={"Z1"}
-                    nbPoubellesDansZone={1}
-                    dataBar={this.state.bar}
+                nom={zoneAfluence.nom}
+                nbPoubellesDansZone={zoneAfluence.nbPoubelleDansZone}
+                dataBar={zoneAfluence.dataBar}
 
                 />
-                <ZoneInfluence
-                    nom={"Z2"}
-                    nbPoubellesDansZone={1}
-                    dataBar={this.state.bar}
-
-                />
-                <div style={{textAlign:"center"}}>
-                    <Pagination total={25} />;
-                </div>
-                <ZoneInfluence
-                    nom={"Z3"}
-                    nbPoubellesDansZone={0}
-                    dataBar={this.state.bar}
-
-                />
-            </div>;
+            ));
 
         const affichageInfo = () =>{
           let retour;
+          let nbMaxPagePoubelle = 5;
+          let nbMaxPageTrie = 1;
+          let nbMaxPageAffluence = 2;
           if(this.state.menu.poubelle) {
-            retour=poubellesInfo;
+            retour=<div><h3>Les Poubelles : </h3>{poubellesInfo}<div style={{textAlign:"center"}}>
+                <Pagination total={this.listPoubelle().length} defaultPageSize={nbMaxPagePoubelle} />
+            </div></div>;
           }else if (this.state.menu.trie){
-            retour = triesInfo;
+              retour = <div>{triesInfo}<Pagination total={this.listZoneTrie().length} defaultPageSize={nbMaxPageTrie}/></div>;
           }else{
-              retour = afluancesInfo;
+              retour = <div>{afluancesInfo}<Pagination total={this.listZoneAfluance().length} defaultPageSize={nbMaxPageAffluence} /></div>;
           }
           return retour;
         };
