@@ -158,6 +158,11 @@ export default class Client extends React.Component {
                 poubelles:1,
                 trie:1,
                 afluance:1
+            },
+            NbMaxElementByPage:{
+                poubelles:5,
+                trie:1,
+                afluance:2
             }
         };
     }
@@ -421,46 +426,86 @@ export default class Client extends React.Component {
           </div>;
         };
 
-        const poubellesInfo = this.listPoubelle(this.state.idGraph).map(poubelle => (
-                <Poubelle
-                    nom={poubelle.nom}
-                    directionPhrase={poubelle.direction}
-                    battery={poubelle.battery}
-                    charge={poubelle.charge}
-                />
-            ));
+        const poubellesInfo = ()=>{
+          const idDepart = parseInt(this.state.NbMaxElementByPage.poubelles*(this.state.pageMenu.poubelles-1));
+          let inc = this.state.NbMaxElementByPage.poubelles;
+          let tab=[];
+          for(let i=idDepart;i<this.listPoubelle(this.state.idGraph).length;i++){
+              if(inc>0){
+                  tab.push(this.listPoubelle(this.state.idGraph)[i]);
+                  inc--;
+              }
+          }
+          return poubellesDisplayInfo(tab);
+        };
 
-        const triesInfo  = this.listZoneTrie(this.state.idGraph).map(trie => (
-                <ZoneDeTrie
-                    nom={trie.nom}
-                    nbPoubellesDansZoneDeTrie={trie.nbPoubelleDansZone}
-                    dataPie={trie.dataPie}
-                    dataLine={trie.dataLine}
-                />
-            ));
+        const poubellesDisplayInfo=(tab)=>tab.map(poubelle=>(
+            <Poubelle
+                nom={poubelle.nom}
+                directionPhrase={poubelle.direction}
+                battery={poubelle.battery}
+                charge={poubelle.charge}
+            />
+        ));
 
-        const afluancesInfo = this.listZoneAfluance(this.state.idGraph).map(zoneAfluence =>(
-                <ZoneInfluence
+        const triesInfo = ()=>{
+            const idDepart = parseInt(this.state.NbMaxElementByPage.trie*(this.state.pageMenu.trie-1));
+            let inc = this.state.NbMaxElementByPage.trie;
+            let tab=[];
+            for(let i=idDepart;i<this.listZoneTrie(this.state.idGraph).length;i++){
+                if(inc>0){
+                    tab.push(this.listZoneTrie(this.state.idGraph)[i]);
+                    inc--;
+                }
+            }
+            return triesDisplayInfo(tab);
+        };
+
+        const triesDisplayInfo=(tab)=>tab.map(trie=>(
+            <ZoneDeTrie
+                nom={trie.nom}
+                nbPoubellesDansZoneDeTrie={trie.nbPoubelleDansZone}
+                dataPie={trie.dataPie}
+                dataLine={trie.dataLine}
+            />
+        ));
+
+        const afluancesInfo = ()=>{
+            const idDepart = parseInt(this.state.NbMaxElementByPage.afluance*(this.state.pageMenu.afluance-1));
+            let inc = this.state.NbMaxElementByPage.afluance;
+            let tab=[];
+            for(let i=idDepart;i<this.listZoneAfluance(this.state.idGraph).length;i++){
+                if(inc>0){
+                    tab.push(this.listZoneAfluance(this.state.idGraph)[i]);
+                    inc--;
+                }
+            }
+            return AfluanceDisplayInfo(tab);
+        };
+
+        const AfluanceDisplayInfo=(tab)=>tab.map(zoneAfluence=>(
+            <ZoneInfluence
                 nom={zoneAfluence.nom}
                 nbPoubellesDansZone={zoneAfluence.nbPoubelleDansZone}
                 dataBar={zoneAfluence.dataBar}
 
-                />
-            ));
+            />
+        ));
+
 
         const affichageInfo = () =>{
           let retour;
-          let nbMaxPagePoubelle = 5;
-          let nbMaxPageTrie = 1;
-          let nbMaxPageAffluence = 2;
+          let nbMaxPagePoubelle = this.state.NbMaxElementByPage.poubelles;
+          let nbMaxPageTrie = this.state.NbMaxElementByPage.trie;
+          let nbMaxPageAffluence = this.state.NbMaxElementByPage.afluance;
           if(this.state.menu.poubelle) {
-            retour=<div><h3>Les Poubelles : </h3>{poubellesInfo}<div style={{textAlign:"center"}}>
-                <Pagination onChange={this._onChangePagePoubelle} total={this.listPoubelle(this.state.idGraph).length} defaultPageSize={nbMaxPagePoubelle} current={this.state.pageMenu.poubelles}/>
+            retour=<div><h3>Les Poubelles : </h3>{poubellesInfo()}<div >
+                <Pagination style={{marginLeft:"20vh"}} onChange={this._onChangePagePoubelle} total={this.listPoubelle(this.state.idGraph).length} defaultPageSize={nbMaxPagePoubelle} current={this.state.pageMenu.poubelles}/>
             </div></div>;
           }else if (this.state.menu.trie){
-              retour = <div>{triesInfo}<Pagination onChange={this._onChangePageTrie} total={this.listZoneTrie(this.state.idGraph).length} defaultPageSize={nbMaxPageTrie} current={this.state.pageMenu.trie}/></div>;
+              retour = <div>{triesInfo()}<Pagination style={{marginLeft:"20vh"}} onChange={this._onChangePageTrie} total={this.listZoneTrie(this.state.idGraph).length} defaultPageSize={nbMaxPageTrie} current={this.state.pageMenu.trie}/></div>;
           }else{
-              retour = <div>{afluancesInfo}<Pagination onChange={this._onChangePageAfluence} total={this.listZoneAfluance(this.state.idGraph).length} defaultPageSize={nbMaxPageAffluence} current={this.state.pageMenu.afluance}/></div>;
+              retour = <div>{afluancesInfo()}<Pagination style={{marginLeft:"20vh"}} onChange={this._onChangePageAfluence} total={this.listZoneAfluance(this.state.idGraph).length} defaultPageSize={nbMaxPageAffluence} current={this.state.pageMenu.afluance}/></div>;
           }
           return retour;
         };
