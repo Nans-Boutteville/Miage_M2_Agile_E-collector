@@ -26,12 +26,6 @@ let charging = (isCharging,battery)=>{
     }
 };
 
-const Poubelle = ({nom,directionPhrase,battery,charge, isCharging=false})=><div>
-    <p><strong>{nom}</strong> {directionPhrase}</p>
-    <p>{charging(isCharging,battery)}{battery}%
-        <Charges size="2rem" icon={""+charge} />{charge}% de charges</p>
-    <p> </p>
-</div>;
 
 const options = [
     { value: 'month', label: 'Par mois' },
@@ -39,36 +33,6 @@ const options = [
     { value: 'week', label: 'Par semaine' }
 ];
 
-const ZoneDeTrie = ({nom,nbPoubellesDansZoneDeTrie,dataPie,dataLine})=><div>
-    <p><strong>{nom}</strong> Statistiques : </p>
-    <p>Nombre de poubelles dans la zone de trie: <strong>{nbPoubellesDansZoneDeTrie}</strong></p>
-    <div style={{display:"inline"}}>
-        <div>
-            <Doughnut data={dataPie} width={300}
-                      height={100}/>
-        </div>
-        <div style={{marginLeft:"10px"}}>
-            <Select
-                options={options}
-            />
-            <Line data={dataLine} width={400} />
-        </div>
-    </div>
-</div>  ;
-
-const ZoneInfluence = ({nom,nbPoubellesDansZone,dataBar})=><div>
-    <p><strong>{nom}</strong> Statisques connues : </p>
-    <p>Nombre de poubelles dans la zone : <strong>{nbPoubellesDansZone}</strong></p>
-        <Bar
-            data={dataBar}
-            width={600}
-            height={10}
-            options={{
-                maintainAspectRatio: false
-            }}
-            style={{MarginLeft:"10px"}}
-        />
-</div>;
 
 function getRandomInt (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -163,6 +127,10 @@ export default class Client extends React.Component {
                 poubelles:5,
                 trie:1,
                 afluance:2
+            },
+            center_graph:{
+                lat:43.71995511362731,
+                long:7.276731660849009
             }
         };
     }
@@ -172,7 +140,6 @@ export default class Client extends React.Component {
             this.setState({pie:getState()});
         }, 5000);
     };
-
 
     componentDidMount(){
 
@@ -331,6 +298,16 @@ export default class Client extends React.Component {
         return this.listGraph()[id].elements.zoneDAfluence;
     }
 
+    _onChangeCenterMap(lat,long){
+        let center_graph= {
+            lat:lat,
+            long:long
+        };
+        this.setState({
+           center_graph:center_graph
+        });
+    }
+
     _onChangeMenu(string){
         let info=null;
         switch (string) {
@@ -401,6 +378,44 @@ export default class Client extends React.Component {
     };
 
     render(){
+        const Poubelle = ({nom,directionPhrase,battery,charge,lat,long, isCharging=false})=><div>
+            <p><a onClick={()=>this._onChangeCenterMap(lat,long)}><strong>{nom}</strong></a> {directionPhrase}</p>
+            <p>{charging(isCharging,battery)}{battery}%
+                <Charges size="2rem" icon={""+charge} />{charge}% de charges</p>
+            <p> </p>
+        </div>;
+
+        const ZoneDeTrie = ({nom,nbPoubellesDansZoneDeTrie,dataPie,dataLine,lat,long})=><div>
+            <p><a onClick={()=>this._onChangeCenterMap(lat,long)}><strong>{nom}</strong></a> Statistiques : </p>
+            <p>Nombre de poubelles dans la zone de trie: <strong>{nbPoubellesDansZoneDeTrie}</strong></p>
+            <div style={{display:"inline"}}>
+                <div>
+                    <Doughnut data={dataPie} width={300}
+                              height={100}/>
+                </div>
+                <div style={{marginLeft:"10px"}}>
+                    <Select
+                        options={options}
+                    />
+                    <Line data={dataLine} width={400} />
+                </div>
+            </div>
+        </div>  ;
+
+        const ZoneInfluence = ({nom,nbPoubellesDansZone,dataBar,lat,long})=><div>
+            <p><a onClick={()=>this._onChangeCenterMap(lat,long)}><strong>{nom}</strong></a> Statisques connues : </p>
+            <p>Nombre de poubelles dans la zone : <strong>{nbPoubellesDansZone}</strong></p>
+            <Bar
+                data={dataBar}
+                width={600}
+                height={10}
+                options={{
+                    maintainAspectRatio: false
+                }}
+                style={{MarginLeft:"10px"}}
+            />
+        </div>;
+
 
         let color = (boolean) =>{
             if(boolean){
@@ -445,6 +460,8 @@ export default class Client extends React.Component {
                 directionPhrase={poubelle.direction}
                 battery={poubelle.battery}
                 charge={poubelle.charge}
+                lat={poubelle.graph.lat}
+                long={poubelle.graph.long}
             />
         ));
 
@@ -467,6 +484,8 @@ export default class Client extends React.Component {
                 nbPoubellesDansZoneDeTrie={trie.nbPoubelleDansZone}
                 dataPie={trie.dataPie}
                 dataLine={trie.dataLine}
+                lat={trie.graph.lat}
+                long={trie.graph.long}
             />
         ));
 
@@ -488,7 +507,8 @@ export default class Client extends React.Component {
                 nom={zoneAfluence.nom}
                 nbPoubellesDansZone={zoneAfluence.nbPoubelleDansZone}
                 dataBar={zoneAfluence.dataBar}
-
+                lat={zoneAfluence.graph.lat}
+                long={zoneAfluence.graph.long}
             />
         ));
 
@@ -535,9 +555,14 @@ export default class Client extends React.Component {
             />
         ));
 
-        const centerMap = {
+        const centerMapDefault = {
             lat:this.listGraph()[this.state.idGraph].lat,
             lng:this.listGraph()[this.state.idGraph].long
+        };
+
+        const centerMap={
+            lat:this.state.center_graph.lat,
+            lng:this.state.center_graph.long
         };
 
 
@@ -548,7 +573,8 @@ export default class Client extends React.Component {
                     <div style={{ height: '80vh', width: '60%' }}>
                         <GoogleMapReact
                             bootstrapURLKeys={{ key: "AIzaSyDv33SIPUfRDQShB-PJA7pzjwCsnFnZ6mY"}}
-                            defaultCenter={centerMap}
+                            centerMapDefault={centerMapDefault}
+                            center={centerMap}
                             defaultZoom={this.listGraph()[this.state.idGraph].zoom}
                         >
                             {ZoneInfluenceDisplayGraph}
