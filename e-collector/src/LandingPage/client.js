@@ -141,13 +141,6 @@ const initialState = {
 };
 
 export default class Client extends React.Component {
-    static defaultProps = {
-        center: {
-            lat: 43.71995511362731,
-            lng: 7.276731660849009
-        },
-        zoom: 18
-    };
 
     constructor(props){
         super(props);
@@ -156,10 +149,16 @@ export default class Client extends React.Component {
                 poubelle : true,
                 trie:false,
                 afluance:false
-        },
+            },
            pie: getState(),
             line: initialState,
-            bar:dataBar
+            bar:dataBar,
+            idGraph:0,
+            pageMenu : {
+                poubelles:1,
+                trie:1,
+                afluance:1
+            }
         };
     }
 
@@ -201,117 +200,131 @@ export default class Client extends React.Component {
     /*
     TODO transfromation pour l'automatisation
      */
-
-
-
-    listPoubelle(){return [
-        {
-            nom:"P1",
-            direction:"se dirige vers Z3",
-            battery :100,
-            charge:25,
-            isCharging:false,
-            map : {
-                lat:43.71989225310265,
-                long:7.275623913033314,
-            }
-        },{
-            nom:"P2",
-            direction:"s'occupe de Z1",
-            battery :80,
-            charge:50,
-            isCharging:false,
-            map : {
-                lat:43.7199628471185,
-                long:7.276885068490628,
-            }
-        },{
-            nom:"P3",
-            direction:"s'occupe de Z2",
-            battery :20,
-            charge:75,
-            isCharging:false,
-            map : {
-                lat:43.72002391515392,
-                long:7.278003658367197,
-            }
-        },{
-            nom:"P4",
-            direction:"se vide et se charge",
-            battery :50,
-            charge:100,
-            isCharging:true,
-            map : {
-                lat:43.72076565945867,
-                long:7.277072369436269,
-            }
-        },{
-            nom:"P5",
-            direction:"suit un parcours prédéfinis",
-            battery :30,
-            charge:25,
-            isCharging:false,
-            map : {
-                lat:43.72038439661712,
-                long:7.277138044431808,
-            }
-        }
-    ];}
-
-
-    listZoneTrie(){ return [
-        {
-            nom:"T1",
-            nbPoubelleDansZone:1,
-            dataPie:this.state.pie,
-            dataLine:this.state.line,
-            graph:{
-                lat:43.72076565945867,
-                long:7.277072369436269
-            }
-        }
-    ];}
-
-
-    listZoneAfluance(){
-        return [
+        listGraph(){ return [
             {
-                nom:"A1",
-                nbPoubelleDansZone:1,
-                dataBar:this.state.bar,
-                graph : {
-                    lat:43.71995511362731,
-                    long:7.276731660849009,
-                    diametre:100
+                nomAdr:"Jardin des Arènes de Cimiez",
+                lat:43.71995511362731,
+                long:7.276731660849009,
+                zoom:18,
+                elements:{
+                    poubelles : [
+                    {
+                            nom:"P1",
+                            direction:"se dirige vers Z3",
+                            battery :100,
+                            charge:25,
+                            isCharging:false,
+                            graph : {
+                                lat:43.71989225310265,
+                                long:7.275623913033314,
+                            }
+                    },{
+                            nom:"P2",
+                            direction:"s'occupe de Z1",
+                            battery :80,
+                            charge:50,
+                            isCharging:false,
+                            graph : {
+                                lat:43.7199628471185,
+                                long:7.276885068490628,
+                            }
+                    },{
+                            nom:"P3",
+                            direction:"s'occupe de Z2",
+                            battery :20,
+                            charge:75,
+                            isCharging:false,
+                            graph : {
+                                lat:43.72002391515392,
+                                long:7.278003658367197,
+                            }
+                    },{
+                            nom:"P4",
+                            direction:"se vide et se charge",
+                            battery :50,
+                            charge:100,
+                            isCharging:true,
+                            graph : {
+                                lat:43.72076565945867,
+                                long:7.277072369436269,
+                            }
+                    }, {
+                            nom: "P5",
+                            direction: "suit un parcours prédéfinis",
+                            battery: 30,
+                            charge: 25,
+                            isCharging: false,
+                            graph: {
+                                lat: 43.72038439661712,
+                                long: 7.277138044431808,
+                            }
+                        }
+                    ],
+                    zoneDetries:[
+                        {
+                            nom:"T1",
+                            nbPoubelleDansZone:1,
+                            dataPie:this.state.pie,
+                            dataLine:this.state.line,
+                            graph:{
+                                lat:43.72076565945867,
+                                long:7.277072369436269
+                            }
+                        }
+                    ],
+                    zoneDAfluence:[
+                        {
+                            nom:"A1",
+                            nbPoubelleDansZone:1,
+                            dataBar:this.state.bar,
+                            graph : {
+                                lat:43.71995511362731,
+                                long:7.276731660849009,
+                                diametre:100
+                            }
+                        },
+                        {
+                            nom:"A2",
+                            nbPoubelleDansZone:1,
+                            dataBar:this.state.bar,
+                            graph : {
+                                lat:43.720105641533365,
+                                long:7.277928739864365,
+                                diametre:40
+                            }
+                        },
+                        {
+                            nom:"A3",
+                            nbPoubelleDansZone:0,
+                            dataBar:this.state.bar,
+                            graph : {
+                                lat:43.72058731928579,
+                                long:7.277028112987523,
+                                diametre:60
+                            }
+                        },
+                    ],
                 }
-            },
-            {
-                nom:"A2",
-                nbPoubelleDansZone:1,
-                dataBar:this.state.bar,
-                graph : {
-                    lat:43.720105641533365,
-                    long:7.277928739864365,
-                    diametre:40
-                }
-            },
-            {
-                nom:"A3",
-                nbPoubelleDansZone:0,
-                dataBar:this.state.bar,
-                graph : {
-                    lat:43.72058731928579,
-                    long:7.277028112987523,
-                    diametre:60
-                }
-            },
+            }
         ];
-    }
-
+        }
     /*
     TODO finish
      */
 
+    listPoubelle(id){
+            return this.listGraph()[id].elements.poubelles;
+        }
+
+
+    listZoneTrie(id){
+        return this.listGraph()[id].elements.zoneDetries;
+    }
+
+
+    listZoneAfluance(id){
+        return this.listGraph()[id].elements.zoneDAfluence;
+    }
 
     _onChangeMenu(string){
         let info=null;
@@ -343,6 +356,45 @@ export default class Client extends React.Component {
         });
     }
 
+    _onChangePagePoubelle= (page)=>{
+        const triePage = this.state.pageMenu.trie;
+        const afluencePage = this.state.pageMenu.afluance;
+        let pageMenu= {
+            poubelles:page,
+            trie:triePage,
+            afluance:afluencePage
+        };
+        this.setState({
+            pageMenu: pageMenu,
+        });
+    };
+
+    _onChangePageTrie= (page)=>{
+        const poubellePage = this.state.pageMenu.poubelles;
+        const afluencePage = this.state.pageMenu.afluance;
+        let pageMenu= {
+            poubelles:poubellePage,
+            trie:page,
+            afluance:afluencePage
+        };
+        this.setState({
+            pageMenu: pageMenu,
+        });
+    };
+
+    _onChangePageAfluence = (page)=>{
+        const poubellePage = this.state.pageMenu.poubelles;
+        const triePage = this.state.pageMenu.trie;
+        let pageMenu= {
+            poubelles:poubellePage,
+            trie:triePage,
+            afluance:page
+        };
+        this.setState({
+            pageMenu: pageMenu,
+        });
+    };
+
     render(){
 
         let color = (boolean) =>{
@@ -369,7 +421,7 @@ export default class Client extends React.Component {
           </div>;
         };
 
-        const poubellesInfo = this.listPoubelle().map(poubelle => (
+        const poubellesInfo = this.listPoubelle(this.state.idGraph).map(poubelle => (
                 <Poubelle
                     nom={poubelle.nom}
                     directionPhrase={poubelle.direction}
@@ -378,7 +430,7 @@ export default class Client extends React.Component {
                 />
             ));
 
-        const triesInfo  = this.listZoneTrie().map(trie => (
+        const triesInfo  = this.listZoneTrie(this.state.idGraph).map(trie => (
                 <ZoneDeTrie
                     nom={trie.nom}
                     nbPoubellesDansZoneDeTrie={trie.nbPoubelleDansZone}
@@ -387,7 +439,7 @@ export default class Client extends React.Component {
                 />
             ));
 
-        const afluancesInfo = this.listZoneAfluance().map(zoneAfluence =>(
+        const afluancesInfo = this.listZoneAfluance(this.state.idGraph).map(zoneAfluence =>(
                 <ZoneInfluence
                 nom={zoneAfluence.nom}
                 nbPoubellesDansZone={zoneAfluence.nbPoubelleDansZone}
@@ -403,87 +455,62 @@ export default class Client extends React.Component {
           let nbMaxPageAffluence = 2;
           if(this.state.menu.poubelle) {
             retour=<div><h3>Les Poubelles : </h3>{poubellesInfo}<div style={{textAlign:"center"}}>
-                <Pagination total={this.listPoubelle().length} defaultPageSize={nbMaxPagePoubelle} />
+                <Pagination onChange={this._onChangePagePoubelle} total={this.listPoubelle(this.state.idGraph).length} defaultPageSize={nbMaxPagePoubelle} current={this.state.pageMenu.poubelles}/>
             </div></div>;
           }else if (this.state.menu.trie){
-              retour = <div>{triesInfo}<Pagination total={this.listZoneTrie().length} defaultPageSize={nbMaxPageTrie}/></div>;
+              retour = <div>{triesInfo}<Pagination onChange={this._onChangePageTrie} total={this.listZoneTrie(this.state.idGraph).length} defaultPageSize={nbMaxPageTrie} current={this.state.pageMenu.trie}/></div>;
           }else{
-              retour = <div>{afluancesInfo}<Pagination total={this.listZoneAfluance().length} defaultPageSize={nbMaxPageAffluence} /></div>;
+              retour = <div>{afluancesInfo}<Pagination onChange={this._onChangePageAfluence} total={this.listZoneAfluance(this.state.idGraph).length} defaultPageSize={nbMaxPageAffluence} current={this.state.pageMenu.afluance}/></div>;
           }
           return retour;
+        };
+
+        const ZoneInfluenceDisplayGraph = this.listZoneAfluance(this.state.idGraph).map(zoneAfluence =>(
+            <ZoneInfluenceGraph
+                lat={zoneAfluence.graph.lat}
+                lng={zoneAfluence.graph.long}
+                text={zoneAfluence.nom}
+                diametre={zoneAfluence.graph.diametre}
+            />
+        ));
+
+        const PoubelleDisplayGraph = this.listPoubelle(this.state.idGraph).map(poubelle =>(
+            <PoubelleGraph
+                lat={poubelle.graph.lat}
+                lng={poubelle.graph.long}
+                text={poubelle.nom}
+            />
+        ));
+
+        const ZoneTrieDisplayGraph = this.listZoneTrie(this.state.idGraph).map(trie =>(
+            <ZoneDeTrieGraph
+                lat={trie.graph.lat}
+                lng={trie.graph.long}
+                text={trie.nom}
+            />
+        ));
+
+        const centerMap = {
+            lat:this.listGraph()[this.state.idGraph].lat,
+            lng:this.listGraph()[this.state.idGraph].long
         };
 
 
         return (
             <div>
-                <h2 style={{textAlign:"center"}}>Jardin des Arènes de Cimiez</h2>
+                <h2 style={{textAlign:"center"}}>{this.listGraph()[this.state.idGraph].nomAdr}</h2>
                 <div style={{display:"flex"}}>
                     <div style={{ height: '80vh', width: '60%' }}>
                         <GoogleMapReact
                             bootstrapURLKeys={{ key: "AIzaSyDv33SIPUfRDQShB-PJA7pzjwCsnFnZ6mY"}}
-                            defaultCenter={this.props.center}
-                            defaultZoom={this.props.zoom}
+                            defaultCenter={centerMap}
+                            defaultZoom={this.listGraph()[this.state.idGraph].zoom}
                         >
+                            {ZoneInfluenceDisplayGraph}
 
-                            <ZoneInfluenceGraph
-                                lat={43.71995511362731}
-                                lng={7.276731660849009}
-                                text={'A1'}
-                                diametre={100}
-                            />
+                            {PoubelleDisplayGraph}
 
-                            <ZoneInfluenceGraph
-                                lat={43.720105641533365}
-                                lng={7.277928739864365}
-                                text={'A2'}
-                                diametre={40}
-                            />
-
-                            <ZoneInfluenceGraph
-                                lat={43.72058731928579}
-                                lng={7.277028112987523}
-                                text={'A3'}
-                                diametre={60}
-                            />
-
-                            <PoubelleGraph
-                                lat={43.71989225310265}
-                                lng={7.275623913033314}
-                                text={'P1'}
-                            />
-
-                            <PoubelleGraph
-                                lat={43.7199628471185}
-                                lng={7.276885068490628}
-                                text={'P2'}
-                            />
-
-                            <PoubelleGraph
-                                lat={43.72002391515392}
-                                lng={7.278003658367197}
-                                text={'P3'}
-                            />
-
-                            <PoubelleGraph
-                                lat={43.72076565945867}
-                                lng={7.277072369436269}
-                                text={'P4'}
-                            />
-
-                            <PoubelleGraph
-                                lat={43.72038439661712}
-                                lng={7.277138044431808}
-                                text={'P5'}
-                            />
-
-                            <ZoneDeTrieGraph
-                                lat={43.72076565945867}
-                                lng={7.277072369436269}
-                                text={'T1'}
-                            />
-
-
-
+                            {ZoneTrieDisplayGraph}
                         </GoogleMapReact>
                     </div>
                     <div style={{ height: '80vh', width: '40%', textAlign:"center" }}>
