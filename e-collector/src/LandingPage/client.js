@@ -33,6 +33,11 @@ const options = [
     { value: 'week', label: 'Par semaine' }
 ];
 
+const optionsParc = [
+    { value: 'Jardin des Arènes de Cimiez', label: 'Jardin des Arènes de Cimiez' },
+    { value: 'test', label: 'test' },
+    { value: 'test2', label: 'test2' }
+];
 
 function getRandomInt (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -396,8 +401,10 @@ export default class Client extends React.Component {
                 <div style={{marginLeft:"10px"}}>
                     <Select
                         options={options}
+                        value={options[0]}
+                        selected={options[0]}
                     />
-                    <Line data={dataLine} width={400} />
+                    <Line data={dataLine} width={500} />
                 </div>
             </div>
         </div>  ;
@@ -425,17 +432,25 @@ export default class Client extends React.Component {
             }
         };
 
+        let disable = (boolean)=>{
+            if(boolean){
+                return "none";
+            }else{
+                return "";
+            }
+        };
+
         const menu = () =>{
           return  <div className="top-bar">
               <ul className="dropdown menu" data-dropdown-menu>
                   <li className="menu-text">
-                      <a onClick={()=>this._onChangeMenu("poubelle")} style={{color:color(this.state.menu.poubelle)}}>Poubelles</a>
+                      <a onClick={()=>this._onChangeMenu("poubelle")} style={{color:color(this.state.menu.poubelle),pointerEvents:disable(this.state.menu.poubelle)}}>Poubelles</a>
                   </li>
                   <li className={"menu-text"}>
-                      <a onClick={()=>this._onChangeMenu("trie")} style={{color:color(this.state.menu.trie)}}>Tries</a>
+                      <a onClick={()=>this._onChangeMenu("trie")} style={{color:color(this.state.menu.trie),pointerEvents:disable(this.state.menu.trie)}}>Tries</a>
                   </li>
                   <li className={"menu-text"}>
-                      <a onClick={()=>this._onChangeMenu("afluance")} style={{color:color(this.state.menu.afluance)}}>Afluances</a>
+                      <a onClick={()=>this._onChangeMenu("afluance")} style={{color:color(this.state.menu.afluance),pointerEvents:disable(this.state.menu.afluance)}}>Afluances</a>
                   </li>
               </ul>
           </div>;
@@ -568,7 +583,14 @@ export default class Client extends React.Component {
 
         return (
             <div>
-                <h2 style={{textAlign:"center"}}>{this.listGraph()[this.state.idGraph].nomAdr}</h2>
+                <div style={{textAlign:"center"}}>
+                    <h2>E-collector Zones</h2>
+                    <p>Choisissez une zone :</p>
+                    <div style={{width:'40%',marginLeft:'30%'}}>
+                        <Select options={optionsParc} selected={optionsParc[0]} value={optionsParc[0]}/>
+                    </div>
+                </div>
+                <h3 style={{textAlign:"center"}}>{this.listGraph()[this.state.idGraph].nomAdr}</h3>
                 <div style={{display:"flex"}}>
                     <div style={{ height: '80vh', width: '60%' }}>
                         <GoogleMapReact

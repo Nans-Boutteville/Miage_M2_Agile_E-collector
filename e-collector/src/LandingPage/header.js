@@ -6,12 +6,34 @@ export default class Header extends React.Component {
 
 
 
+
     render(){
         const options = [
             { value: 'site1', label: 'Jardin des Arènes de Cimiez' },
             { value: 'site2', label: 'Autre lieu' },
             { value: 'site3', label: 'Va te faire' }
         ];
+
+        let color = (string) =>{
+            let url = window.location.href;
+            url = url.split("/");
+            if(string==url[url.length-1]){
+                return "black";
+            }else{
+                return ""
+            }
+        };
+
+        let disable = (string)=>{
+            let url = window.location.href;
+            url = url.split("/");
+            if(string==url[url.length-1]){
+                return "none";
+            }else{
+                return ""
+            }
+        };
+
 
         let header=()=>{
             const customer = <div className="hero-section-text">
@@ -23,12 +45,12 @@ export default class Header extends React.Component {
 
         let listmenu=()=>{
             const customer =<ul className="dropdown menu" data-dropdown-menu>
-                <li className="menu-text"><a href="/">E-Collect</a></li>
+                <li className="menu-text"><a href="/" style={{color:color(""),pointerEvents:disable("")}}>E-Collect</a></li>
                 <li className={"menu-text"}>
-                    <a href={"/client"}>Jardin des Arènes de Cimiez</a>
+                    <a href={"/client"} style={{color:color("client"),pointerEvents:disable("client")}}>Les lieux</a>
                 </li>
                 <li className={"menu-text"}>
-                    <a href={"/client"}>Autre Lieu</a>
+                    <a href={"/client"} style={{color:color("client2"),pointerEvents:disable("client2")}}>Paramètres</a>
                 </li>
             </ul>;
             return customer;
