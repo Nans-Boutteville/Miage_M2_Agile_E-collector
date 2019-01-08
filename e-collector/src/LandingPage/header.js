@@ -1,5 +1,4 @@
 import React from 'react';
-import Select from 'react-select';
 
 
 export default class Header extends React.Component {
@@ -50,7 +49,7 @@ export default class Header extends React.Component {
                     <a href={"/client"} style={{color:color("client"),pointerEvents:disable("client")}}>Les lieux</a>
                 </li>
                 <li className={"menu-text"}>
-                    <a href={"/client"} style={{color:color("client2"),pointerEvents:disable("client2")}}>Paramètres</a>
+                    <a href={"/options"} style={{color:color("options"),pointerEvents:disable("options")}}>Paramètres</a>
                 </li>
             </ul>;
             return customer;
