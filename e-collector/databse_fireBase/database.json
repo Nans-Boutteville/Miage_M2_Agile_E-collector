@@ -1,0 +1,341 @@
+{
+    "nomAdr":"Jardin des Arènes de Cimiez",
+    "lat":43.71995511362731,
+    "long":7.276731660849009,
+    "zoom":18,
+    "elements":{
+      "poubelles" : [
+        {
+          "nom":"P1",
+          "direction":"se dirige vers Z3",
+          "battery" :100,
+          "charge":25,
+          "isCharging":false,
+          "graph" : {
+            "lat":43.71989225310265,
+            "long":7.275623913033314
+          },
+          "trajet": [
+            "R1",
+            "R2",
+            "R3",
+            "R9",
+            "R4",
+            "R5",
+            "R8"
+          ]
+        },{
+          "nom":"P2",
+          "direction":"s'occupe de Z1",
+          "battery" :80,
+          "charge":50,
+          "isCharging":false,
+          "graph" : {
+            "lat":43.7199628471185,
+            "long":7.276885068490628
+          },
+          "trajet": [
+            "R1",
+            "R2",
+            "R3",
+            "R9",
+            "R4",
+            "R5",
+            "R8"
+          ]
+        },{
+          "nom":"P3",
+          "direction":"s'occupe de Z2",
+          "battery" :20,
+          "charge":75,
+          "isCharging":false,
+          "graph" : {
+            "lat":43.72002391515392,
+            "long":7.278003658367197
+          },
+          "trajet": [
+            "R1",
+            "R2",
+            "R3",
+            "R9",
+            "R4",
+            "R5",
+            "R8"
+          ]
+        },{
+          "nom":"P4",
+          "direction":"se vide et se charge",
+          "battery" :50,
+          "charge":100,
+          "isCharging":true,
+          "graph" : {
+            "lat":43.72076565945867,
+            "long":7.277072369436269
+          },
+          "trajet": [
+            "R1",
+            "R2",
+            "R3",
+            "R9",
+            "R4",
+            "R5",
+            "R8"
+          ]
+        }, {
+          "nom": "P5",
+          "direction": "suit un parcours prédéfinis",
+          "battery": 30,
+          "charge": 25,
+          "isCharging": false,
+          "graph": {
+            "lat": 43.72038439661712,
+            "long": 7.277138044431808
+          },
+          "trajet": [
+            "R1",
+            "R2",
+            "R3",
+            "R9",
+            "R4",
+            "R5",
+            "R8"
+          ]
+        }
+      ],
+      "zoneDetries":[
+        {
+          "nom":"T1",
+          "nbPoubelleDansZone":1,
+          "dataPie":{
+            "labels": [
+              "Plastiques",
+              "Verres",
+              "Non-Recyclable"
+            ],
+            "datasets": [
+              {
+                "data": [50, 100, 200],
+                "backgroundColor": [
+                  "#36A2EB",
+                  "#00FF00",
+                  "#CCC"
+                ],
+                "hoverBackgroundColor": [
+                  "#36A2EB",
+                  "#00FF00",
+                  "#CCC"
+                ]
+              }
+            ]
+
+          },
+          "dataLine":{
+            "labels": ["January", "February", "March", "April", "May", "June", "July"],
+            "datasets": [
+              {
+                "label": "Nombres de détritus jetées",
+                "fill": false,
+                "lineTension": 0.1,
+                "backgroundColor": "rgba(75,192,192,0.4)",
+                "borderColor": "rgba(75,192,192,1)",
+                "borderCapStyle": "butt",
+                "borderDash": [],
+                "borderDashOffset": 0.0,
+                "borderJoinStyle": "miter",
+                "pointBorderColor": "rgba(75,192,192,1)",
+                "pointBackgroundColor": "#fff",
+                "pointBorderWidth": 1,
+                "pointHoverRadius": 5,
+                "pointHoverBackgroundColor": "rgba(75,192,192,1)",
+                "pointHoverBorderColor": "rgba(220,220,220,1)",
+                "pointHoverBorderWidth": 2,
+                "pointRadius": 1,
+                "pointHitRadius": 10,
+                "data": [65, 59, 80, 81, 56, 55, 40]
+              }
+            ]
+          },
+          "graph":{
+            "lat":43.72076565945867,
+            "long":7.277072369436269
+          }
+        }
+      ],
+      "zoneDAfluence":[
+        {
+          "nom":"A1",
+          "nbPoubelleDansZone":1,
+          "dataBar":{
+            "labels": ["13h", "14h", "15h", "16h", "17h", "18h", "19h"],
+            "datasets": [
+              {
+                "label": "Nombre de personnes",
+                "backgroundColor": "rgba(255,99,132,0.2)",
+                "borderColor": "rgba(255,99,132,1)",
+                "borderWidth": 1,
+                "hoverBackgroundColor": "rgba(255,99,132,0.4)",
+                "hoverBorderColor": "rgba(255,99,132,1)",
+                "data": [65, 59, 80, 81, 56, 55, 40]
+              }
+            ]
+          },
+          "graph" : {
+            "lat":43.71995511362731,
+            "long":7.276731660849009,
+            "diametre":100
+          }
+        },
+        {
+          "nom":"A2",
+          "nbPoubelleDansZone":1,
+          "dataBar":{
+            "labels": ["13h", "14h", "15h", "16h", "17h", "18h", "19h"],
+            "datasets": [
+              {
+                "label": "Nombre de personnes",
+                "backgroundColor": "rgba(255,99,132,0.2)",
+                "borderColor": "rgba(255,99,132,1)",
+                "borderWidth": 1,
+                "hoverBackgroundColor": "rgba(255,99,132,0.4)",
+                "hoverBorderColor": "rgba(255,99,132,1)",
+                "data": [65, 59, 80, 81, 56, 55, 40]
+              }
+            ]
+          },
+          "graph" : {
+            "lat":43.720105641533365,
+            "long":7.277928739864365,
+            "diametre":40
+          }
+        },
+        {
+          "nom":"A3",
+          "nbPoubelleDansZone":0,
+          "dataBar":{
+            "labels": ["13h", "14h", "15h", "16h", "17h", "18h", "19h"],
+            "datasets": [
+              {
+                "label": "Nombre de personnes",
+                "backgroundColor": "rgba(255,99,132,0.2)",
+                "borderColor": "rgba(255,99,132,1)",
+                "borderWidth": 1,
+                "hoverBackgroundColor": "rgba(255,99,132,0.4)",
+                "hoverBorderColor": "rgba(255,99,132,1)",
+                "data": [65, 59, 80, 81, 56, 55, 40]
+              }
+            ]
+          },
+          "graph" : {
+            "lat":43.72058731928579,
+            "long":7.277028112987523,
+            "diametre":60
+          }
+        }
+      ],
+      "routes": [
+        {
+          "nom":"R1",
+          "graph":{
+            "lat":43.72058247422525,
+            "long":7.276942341671088
+          },
+          "nextNeighbor":[
+              "R2",
+              "R8"
+          ]
+        },
+        {
+          "nom":"R2",
+          "graph":{
+            "lat":43.72039831803999,
+            "long":7.27638444219599
+          },
+          "nextNeighbor":[
+            "R1",
+            "R8",
+            "R3"
+          ]
+        },
+        {
+          "nom":"R3",
+          "graph":{
+            "lat":43.720031942472346,
+            "long":7.275762169704535
+          },
+          "nextNeighbor":[
+            "R2",
+            "R9"
+          ]
+        },
+        {
+          "nom":"R4",
+          "graph":{
+            "lat":43.719754736188975,
+            "long":7.277859657154181
+          },
+          "nextNeighbor":[
+            "R9",
+            "R8",
+            "R5"
+          ]
+        },
+        {
+          "nom":"R5",
+          "graph":{
+            "lat":43.72022773075285,
+            "long":7.278111784801581
+          },
+          "nextNeighbor":[
+            "R4",
+            "R8",
+            "R6",
+            "R7"
+          ]
+        },
+        {
+          "nom":"R6",
+          "graph":{
+            "lat":43.720282008578714,
+            "long":7.27838000570307
+          },
+          "nextNeighbor":[
+            "R5"
+          ]
+        },
+        {
+          "nom":"R7",
+          "graph":{
+            "lat":43.72010560546485,
+            "long":7.27839073453913
+          },
+          "nextNeighbor":[
+            "R5"
+          ]
+        },
+        {
+          "nom":"R8",
+          "graph":{
+            "lat":43.720337,
+            "long":7.277547
+          },
+          "nextNeighbor":[
+            "R2",
+            "R1",
+            "R5",
+            "R4"
+          ]
+        },
+        {
+          "nom":"R9",
+          "graph":{
+            "lat":43.719745,
+            "long":7.276138
+          },
+          "nextNeighbor":[
+            "R3",
+            "R4"
+          ]
+        }
+      ]
+    }
+}

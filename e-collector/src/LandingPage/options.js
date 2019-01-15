@@ -3,106 +3,21 @@ import GoogleMapReact from 'google-map-react';
 import {PoubelleStyle} from '../css/my_great_place_styles.js';
 import {ZoneDeTrieStyle} from '../css/my_great_place_styles.js';
 import {RouteStyle} from '../css/my_great_place_styles.js';
-import {Battery} from '../css/battery';
+import {PoubelleStyleHover} from '../css/my_great_place_styles.js';
 import Select from 'react-select';
+import {Other} from '../css/other';
 import 'rc-pagination/assets/index.css';
 
 
 
-const PoubelleGraph = ({ text }) => <div style={PoubelleStyle}> {text}</div>;
 const ZoneDeTrieGraph= ({ text}) => <div style={ZoneDeTrieStyle}> {text}</div>;
 const RouteGraph= ({ text}) => <div style={RouteStyle}> {text}</div>;
-
-let charging = (isCharging,battery)=>{
-    if(isCharging){
-        return <Battery size="2rem" icon={"charging-"+battery} />
-    }else{
-        return <Battery size="2rem" icon={""+battery} />
-    }
-};
-
-
-const options = [
-    { value: 'month', label: 'Par mois' },
-    { value: 'year', label: 'Par année' },
-    { value: 'week', label: 'Par semaine' }
-];
 
 const optionsParc = [
     { value: 'Jardin des Arènes de Cimiez', label: 'Jardin des Arènes de Cimiez' },
     { value: 'test', label: 'test' },
     { value: 'test2', label: 'test2' }
 ];
-
-function getRandomInt (min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-
-const dataBar = {
-    labels: ['13h', '14h', '15h', '16h', '17h', '18h', '19h'],
-    datasets: [
-        {
-            label: 'Nombre de personnes',
-            backgroundColor: 'rgba(255,99,132,0.2)',
-            borderColor: 'rgba(255,99,132,1)',
-            borderWidth: 1,
-            hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-            hoverBorderColor: 'rgba(255,99,132,1)',
-            data: [65, 59, 80, 81, 56, 55, 40]
-        }
-    ]
-};
-
-
-const getState = () => ({
-    labels: [
-        'Plastiques',
-        'Verres',
-        'Non-Recyclable'
-    ],
-    datasets: [{
-        data: [getRandomInt(50, 200), getRandomInt(100, 150), getRandomInt(150, 250)],
-        backgroundColor: [
-            '#36A2EB',
-            '#00FF00',
-            '#CCC'
-        ],
-        hoverBackgroundColor: [
-            '#36A2EB',
-            '#00FF00',
-            '#CCC'
-        ]
-    }]
-
-});
-
-const initialState = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-        {
-            label: 'Nombres de détritus jetées',
-            fill: false,
-            lineTension: 0.1,
-            backgroundColor: 'rgba(75,192,192,0.4)',
-            borderColor: 'rgba(75,192,192,1)',
-            borderCapStyle: 'butt',
-            borderDash: [],
-            borderDashOffset: 0.0,
-            borderJoinStyle: 'miter',
-            pointBorderColor: 'rgba(75,192,192,1)',
-            pointBackgroundColor: '#fff',
-            pointBorderWidth: 1,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-            pointHoverBorderColor: 'rgba(220,220,220,1)',
-            pointHoverBorderWidth: 2,
-            pointRadius: 1,
-            pointHitRadius: 10,
-            data: [65, 59, 80, 81, 56, 55, 40]
-        }
-    ]
-};
 
 export default class Client extends React.Component {
 
@@ -112,9 +27,6 @@ export default class Client extends React.Component {
             menu : {
                 poubelle : true
             },
-            pie: getState(),
-            line: initialState,
-            bar:dataBar,
             idGraph:0,
             pageMenu : {
                 poubelles:1,
@@ -126,41 +38,9 @@ export default class Client extends React.Component {
                 lat:43.71995511362731,
                 long:7.276731660849009
             },
+            colorPoubelleHover:false,
             poubelleSelectionner:null,
         };
-    }
-
-    componentWillMount() {
-        setInterval(() => {
-            this.setState({pie:getState()});
-        }, 5000);
-    };
-
-    componentDidMount(){
-
-        let _this = this;
-
-        setInterval(function(){
-            let oldDataSet = _this.state.line.datasets[0];
-            let newData = [];
-
-            for(let x=0; x< _this.state.line.labels.length; x++){
-                newData.push(Math.floor(Math.random() * 100));
-            }
-
-            var newDataSet = {
-                ...oldDataSet
-            };
-
-            newDataSet.data = newData;
-
-            var line = {
-                ...initialState,
-                datasets: [newDataSet]
-            };
-
-            _this.setState({line:line});
-        }, 5000);
     }
 
 
@@ -176,16 +56,41 @@ export default class Client extends React.Component {
             elements:{
                 poubelles : [
                     {
-                        nom:"P1",
-                        direction:"se dirige vers Z3",
-                        battery :100,
-                        charge:25,
-                        isCharging:false,
-                        graph : {
-                            lat:43.71989225310265,
-                            long:7.275623913033314,
-                        }
-                    },{
+                        nom: "P1",
+                        direction: "se dirige vers Z3",
+                        battery: 100,
+                        charge: 25,
+                        isCharging: false,
+                        graph: {
+                            lat: 43.71989225310265,
+                            long: 7.275623913033314,
+                        },
+                        trajet: [
+                            {
+                                nameOfRoad:"R1"
+                            },
+                            {
+                                nameOfRoad:"R2"
+                            },
+                            {
+                                nameOfRoad:"R3"
+                            },
+                            {
+                                nameOfRoad:"R9"
+                            },
+                            {
+                                nameOfRoad:"R4"
+                            },
+                            {
+                                nameOfRoad:"R5"
+                            },
+                            {
+                                nameOfRoad:"R8"
+                            }
+                        ]
+                    }
+
+                    ,{
                         nom:"P2",
                         direction:"s'occupe de Z1",
                         battery :80,
@@ -289,6 +194,21 @@ export default class Client extends React.Component {
                             long:7.27839073453913
                         }
                     },
+                    {
+                        nom:"R8",
+                        graph:{
+                            lat:43.720337,
+                            long:7.277547
+                        }
+                    },
+                    ,
+                    {
+                        nom:"R9",
+                        graph:{
+                            lat:43.719745,
+                            long:7.276138
+                        }
+                    },
                 ],
             }
         }
@@ -335,8 +255,37 @@ export default class Client extends React.Component {
         });
     }
 
+    _onChildClick = (key, childProps) => {
+        this._onChangeCenterMap(childProps.lat,childProps.lng);
+        this.setState({
+            poubelleSelectionner: childProps.valueOf().text
+        })
+
+    };
+
+    _onMouseEnterPoubelle = ()=>{
+        this.setState({
+            colorPoubelleHover:true
+        });
+    };
+
+    _onMouseLeavePoubelle= ()=>{
+        this.setState({
+            colorPoubelleHover:false
+        });
+    };
+
+    _changePoubelle=()=>{
+        this.setState({
+            poubelleSelectionner:null
+        });
+    };
+
 
     render(){
+
+        const PoubelleGraph = ({ text }) => <div onMouseEnter={this._onMouseEnterPoubelle}
+                                                 onMouseLeave={this._onMouseLeavePoubelle} style={this.state.colorPoubelleHover?PoubelleStyleHover: PoubelleStyle}> {text}</div>;
 
         let color = (boolean) =>{
             if(boolean){
@@ -364,23 +313,62 @@ export default class Client extends React.Component {
             </div>;
         };
 
+        const GetInfoPoubelle = () =>{
+          let retour;
+          if(this.state.poubelleSelectionner!=null) {
+              let poubelleName = this.state.poubelleSelectionner;
+              this.listPoubelle(this.state.idGraph).map(poubelle=>{
+                  if(poubelleName==poubelle.nom){
+
+                   retour=poubelle.trajet.map(route=>{
+                       return <div>
+                           <div>{route.nameOfRoad}</div>
+                           <Other size="2rem" icon={"arrow-drop-down"} />
+                       </div>;
+                  });
+                  }
+
+              })
+
+          }
+          return retour;
+        };
 
         const affichageInfo = () =>{
             let retour;
-            if(this.state.menu.poubelle) {
-                retour=<div><h3>Selectionner une poubelle </h3><div >
-                </div></div>;
+            if(this.state.poubelleSelectionner==null) {
+                retour=<div>
+                    <h3>Selectionner une poubelle </h3>
+                </div>
+
+            }else{
+                retour=<div>
+                    <h3>Poubelle {this.state.poubelleSelectionner}</h3>
+                    <div>
+                        {GetInfoPoubelle()}
+                    </div>
+                    <div>
+                        <button style={{marginRight:"3px"}} onClick={this._changePoubelle} className={"button"}> Changer de poubelles</button>
+                        <button onClick={this._changePoubelle} className={"button"}> Modifier le trajet</button>
+                    </div>
+                </div>
             }
             return retour;
         };
 
-        const PoubelleDisplayGraph = this.listPoubelle(this.state.idGraph).map(poubelle =>(
-            <PoubelleGraph
-                lat={poubelle.graph.lat}
-                lng={poubelle.graph.long}
-                text={poubelle.nom}
-            />
-        ));
+        const PoubelleDisplayGraph = ()=>{
+            let retour;
+            if(this.state.poubelleSelectionner==null){
+                retour = this.listPoubelle(this.state.idGraph).map(poubelle =>(
+                    <PoubelleGraph
+                        lat={poubelle.graph.lat}
+                        lng={poubelle.graph.long}
+                        text={poubelle.nom}
+                    />
+                ));
+            }
+            return retour;
+        }
 
         const ZoneTrieDisplayGraph = this.listZoneTrie(this.state.idGraph).map(trie =>(
             <ZoneDeTrieGraph
@@ -415,6 +403,7 @@ export default class Client extends React.Component {
         };
 
 
+
         return (
             <div>
                 <div style={{textAlign:"center"}}>
@@ -432,8 +421,9 @@ export default class Client extends React.Component {
                             centerMapDefault={centerMapDefault}
                             center={centerMap}
                             defaultZoom={this.listGraph()[this.state.idGraph].zoom}
+                            onChildClick={this._onChildClick}
                         >
-                            {PoubelleDisplayGraph}
+                            {PoubelleDisplayGraph()}
 
                             {ZoneTrieDisplayGraph}
 
