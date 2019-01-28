@@ -6,6 +6,7 @@ import {RouteStyle} from '../css/my_great_place_styles.js';
 import {PoubelleStyleHover} from '../css/my_great_place_styles.js';
 import Select from 'react-select';
 import {Other} from '../css/other';
+import editJsonFile from 'edit-json-file';
 import 'rc-pagination/assets/index.css';
 
 
@@ -23,6 +24,7 @@ export default class Client extends React.Component {
 
     constructor(props){
         super(props);
+        let data = require('../json/database.json');
         this.state = {
             menu : {
                 poubelle : true
@@ -40,195 +42,24 @@ export default class Client extends React.Component {
             },
             colorPoubelleHover:false,
             poubelleSelectionner:null,
+            RoadChanging:false,
+            database:data,
+            roadMapChange:null
         };
     }
+    
 
-
-    /*
-    TODO transfromation pour l'automatisation
-     */
-    listGraph(){ return [
-        {
-            nomAdr:"Jardin des Arènes de Cimiez",
-            lat:43.71995511362731,
-            long:7.276731660849009,
-            zoom:18,
-            elements:{
-                poubelles : [
-                    {
-                        nom: "P1",
-                        direction: "se dirige vers Z3",
-                        battery: 100,
-                        charge: 25,
-                        isCharging: false,
-                        graph: {
-                            lat: 43.71989225310265,
-                            long: 7.275623913033314,
-                        },
-                        trajet: [
-                            {
-                                nameOfRoad:"R1"
-                            },
-                            {
-                                nameOfRoad:"R2"
-                            },
-                            {
-                                nameOfRoad:"R3"
-                            },
-                            {
-                                nameOfRoad:"R9"
-                            },
-                            {
-                                nameOfRoad:"R4"
-                            },
-                            {
-                                nameOfRoad:"R5"
-                            },
-                            {
-                                nameOfRoad:"R8"
-                            }
-                        ]
-                    }
-
-                    ,{
-                        nom:"P2",
-                        direction:"s'occupe de Z1",
-                        battery :80,
-                        charge:50,
-                        isCharging:false,
-                        graph : {
-                            lat:43.7199628471185,
-                            long:7.276885068490628,
-                        }
-                    },{
-                        nom:"P3",
-                        direction:"s'occupe de Z2",
-                        battery :20,
-                        charge:75,
-                        isCharging:false,
-                        graph : {
-                            lat:43.72002391515392,
-                            long:7.278003658367197,
-                        }
-                    },{
-                        nom:"P4",
-                        direction:"se vide et se charge",
-                        battery :50,
-                        charge:100,
-                        isCharging:true,
-                        graph : {
-                            lat:43.72076565945867,
-                            long:7.277072369436269,
-                        }
-                    }, {
-                        nom: "P5",
-                        direction: "suit un parcours prédéfinis",
-                        battery: 30,
-                        charge: 25,
-                        isCharging: false,
-                        graph: {
-                            lat: 43.72038439661712,
-                            long: 7.277138044431808,
-                        }
-                    }
-                ],
-                zoneDetries:[
-                    {
-                        nom:"T1",
-                        nbPoubelleDansZone:1,
-                        dataPie:this.state.pie,
-                        dataLine:this.state.line,
-                        graph:{
-                            lat:43.72076565945867,
-                            long:7.277072369436269
-                        }
-                    }
-                ],
-                routes: [
-                    {
-                        nom:"R1",
-                        graph:{
-                            lat:43.72058247422525,
-                            long:7.276942341671088
-                        }
-                    },
-                    {
-                        nom:"R2",
-                        graph:{
-                            lat:43.72039831803999,
-                            long:7.27638444219599
-                        }
-                    },
-                    {
-                        nom:"R3",
-                        graph:{
-                            lat:43.720031942472346,
-                            long:7.275762169704535
-                        }
-                    },
-                    {
-                        nom:"R4",
-                        graph:{
-                            lat:43.719754736188975,
-                            long:7.277859657154181
-                        }
-                    },
-                    {
-                        nom:"R5",
-                        graph:{
-                            lat:43.72022773075285,
-                            long:7.278111784801581
-                        }
-                    },
-                    {
-                        nom:"R6",
-                        graph:{
-                            lat:43.720282008578714,
-                            long:7.27838000570307
-                        }
-                    },
-                    {
-                        nom:"R7",
-                        graph:{
-                            lat:43.72010560546485,
-                            long:7.27839073453913
-                        }
-                    },
-                    {
-                        nom:"R8",
-                        graph:{
-                            lat:43.720337,
-                            long:7.277547
-                        }
-                    },
-                    ,
-                    {
-                        nom:"R9",
-                        graph:{
-                            lat:43.719745,
-                            long:7.276138
-                        }
-                    },
-                ],
-            }
-        }
-    ];
-    }
-    /*
-    TODO finish
-     */
-
-    listPoubelle(id){
-        return this.listGraph()[id].elements.poubelles;
+    listPoubelle(){
+        return this.state.database.elements.poubelles;
     }
 
 
-    listZoneTrie(id){
-        return this.listGraph()[id].elements.zoneDetries;
+    listZoneTrie(){
+        return this.state.database.elements.zoneDetries;
     }
 
-    listRoute(id){
-        return this.listGraph()[id].elements.routes;
+    listRoute(){
+        return this.state.database.elements.routes;
     }
 
     _onChangeCenterMap(lat,long){
@@ -256,11 +87,23 @@ export default class Client extends React.Component {
     }
 
     _onChildClick = (key, childProps) => {
-        this._onChangeCenterMap(childProps.lat,childProps.lng);
-        this.setState({
-            poubelleSelectionner: childProps.valueOf().text
-        })
-
+        if(childProps.text.startsWith('P')){
+            this._onChangeCenterMap(childProps.lat,childProps.lng);
+            this.setState({
+                poubelleSelectionner: childProps.valueOf().text
+            });
+        }else if (childProps.text.startsWith('R') && this.state.RoadChanging){
+           let tab = [];
+           if(this.state.roadMapChange!=null){
+               this.state.roadMapChange.map(roadName=>{
+                   tab.push(roadName);
+               })
+           }
+           tab.push(childProps.text);
+           this.setState({
+               roadMapChange:tab
+           });
+        }
     };
 
     _onMouseEnterPoubelle = ()=>{
@@ -277,6 +120,33 @@ export default class Client extends React.Component {
 
     _changePoubelle=()=>{
         this.setState({
+            poubelleSelectionner:null
+        });
+    };
+
+    _changePoubelle=()=>{
+        this.setState({
+            RoadChanging:true
+        });
+    };
+
+    _anulationChange=()=>{
+        this.setState({
+            RoadChanging:false
+        });
+    };
+
+    _saveChange=()=>{
+        let file = editJsonFile('../json/database.json');
+        let numPoubellesSelect = this.state.poubelleSelectionner.split("P")[1];
+        console.log(numPoubellesSelect);
+
+        file.set("elements.poubelles["+numPoubellesSelect+"].trajet",this.state.roadMapChange)
+        console.log(file.get());
+        //file.save();
+        //TODO marche pas
+        this.setState({
+            RoadChanging:false,
             poubelleSelectionner:null
         });
     };
@@ -313,19 +183,33 @@ export default class Client extends React.Component {
             </div>;
         };
 
+        const roadMapChanging= ()=>{
+           let retour;
+           if(this.state.roadMapChange!=null){
+               retour = this.state.roadMapChange.map(roadName=>{
+                   return <div>{roadName} -></div>
+               })
+           }
+           return retour;
+        };
+
         const GetInfoPoubelle = () =>{
           let retour;
           if(this.state.poubelleSelectionner!=null) {
               let poubelleName = this.state.poubelleSelectionner;
-              this.listPoubelle(this.state.idGraph).map(poubelle=>{
-                  if(poubelleName==poubelle.nom){
-
-                   retour=poubelle.trajet.map(route=>{
-                       return <div>
-                           <div>{route.nameOfRoad}</div>
-                           <Other size="2rem" icon={"arrow-drop-down"} />
-                       </div>;
-                  });
+              this.listPoubelle().map(poubelle=>{
+                  if(poubelleName==poubelle.nom && !this.state.RoadChanging){
+                       retour=poubelle.trajet.map(route=>{
+                           return <div>
+                               <div>{route}</div>
+                               <Other size="2rem" icon={"arrow-drop-down"} />
+                           </div>;
+                      });
+                  }else if(this.state.RoadChanging){
+                      retour = <div>
+                          <div>Appuyer sur les routes pour l'ajouter au trajet de la poubelle</div>
+                          <div>{roadMapChanging()}</div>
+                      </div>
                   }
 
               })
@@ -333,6 +217,22 @@ export default class Client extends React.Component {
           }
           return retour;
         };
+
+        const ButtonDisplay = () =>{
+            let retour;
+            if(this.state.RoadChanging){
+                retour =<div>
+                    <button style={{marginRight:"3px"}} onClick={this._anulationChange} className={"button"}> Annuler</button>
+                    <button onClick={this._saveChange} className={"button"}> Save</button>
+                </div>;
+            }else{
+                retour =<div>
+                    <button style={{marginRight:"3px"}} onClick={this._changePoubelle} className={"button"}> Changer de poubelles</button>
+                    <button onClick={this._changePoubelle} className={"button"}> Modifier le trajet</button>
+                </div>;
+            }
+            return retour;
+        }
 
         const affichageInfo = () =>{
             let retour;
@@ -347,10 +247,7 @@ export default class Client extends React.Component {
                     <div>
                         {GetInfoPoubelle()}
                     </div>
-                    <div>
-                        <button style={{marginRight:"3px"}} onClick={this._changePoubelle} className={"button"}> Changer de poubelles</button>
-                        <button onClick={this._changePoubelle} className={"button"}> Modifier le trajet</button>
-                    </div>
+                    {ButtonDisplay()}
                 </div>
             }
             return retour;
@@ -359,7 +256,7 @@ export default class Client extends React.Component {
         const PoubelleDisplayGraph = ()=>{
             let retour;
             if(this.state.poubelleSelectionner==null){
-                retour = this.listPoubelle(this.state.idGraph).map(poubelle =>(
+                retour = this.listPoubelle().map(poubelle =>(
                     <PoubelleGraph
                         lat={poubelle.graph.lat}
                         lng={poubelle.graph.long}
@@ -370,7 +267,7 @@ export default class Client extends React.Component {
             return retour;
         }
 
-        const ZoneTrieDisplayGraph = this.listZoneTrie(this.state.idGraph).map(trie =>(
+        const ZoneTrieDisplayGraph = this.listZoneTrie(this.state.database).map(trie =>(
             <ZoneDeTrieGraph
                 lat={trie.graph.lat}
                 lng={trie.graph.long}
@@ -381,7 +278,7 @@ export default class Client extends React.Component {
         const RouteDisplayGraph = ()=>{
           let retour;
           if(this.state.poubelleSelectionner!=null){
-              retour = this.listRoute(this.state.idGraph).map(trie =>(
+              retour = this.listRoute(this.state.database).map(trie =>(
                   <RouteGraph
                       lat={trie.graph.lat}
                       lng={trie.graph.long}
@@ -393,8 +290,8 @@ export default class Client extends React.Component {
         };
 
         const centerMapDefault = {
-            lat:this.listGraph()[this.state.idGraph].lat,
-            lng:this.listGraph()[this.state.idGraph].long
+            lat:this.state.database.lat,
+            lng:this.state.database.long
         };
 
         const centerMap={
@@ -413,14 +310,14 @@ export default class Client extends React.Component {
                         <Select options={optionsParc} selected={optionsParc[0]} value={optionsParc[0]}/>
                     </div>
                 </div>
-                <h3 style={{textAlign:"center"}}>{this.listGraph()[this.state.idGraph].nomAdr}</h3>
+                <h3 style={{textAlign:"center"}}>{this.state.database.nomAdr}</h3>
                 <div style={{display:"flex"}}>
                     <div style={{ height: '80vh', width: '60%' }}>
                         <GoogleMapReact
                             bootstrapURLKeys={{ key: "AIzaSyDv33SIPUfRDQShB-PJA7pzjwCsnFnZ6mY"}}
                             centerMapDefault={centerMapDefault}
                             center={centerMap}
-                            defaultZoom={this.listGraph()[this.state.idGraph].zoom}
+                            defaultZoom={this.state.database.zoom}
                             onChildClick={this._onChildClick}
                         >
                             {PoubelleDisplayGraph()}

@@ -35,93 +35,21 @@ const options = [
 
 const optionsParc = [
     { value: 'Jardin des Arènes de Cimiez', label: 'Jardin des Arènes de Cimiez' },
-    { value: 'test', label: 'test' },
-    { value: 'test2', label: 'test2' }
 ];
 
-function getRandomInt (min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+//usage:
 
-
-const dataBar = {
-    labels: ['13h', '14h', '15h', '16h', '17h', '18h', '19h'],
-    datasets: [
-        {
-            label: 'Nombre de personnes',
-            backgroundColor: 'rgba(255,99,132,0.2)',
-            borderColor: 'rgba(255,99,132,1)',
-            borderWidth: 1,
-            hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-            hoverBorderColor: 'rgba(255,99,132,1)',
-            data: [65, 59, 80, 81, 56, 55, 40]
-        }
-    ]
-};
-
-
-const getState = () => ({
-        labels: [
-            'Plastiques',
-            'Verres',
-            'Non-Recyclable'
-        ],
-        datasets: [{
-            data: [getRandomInt(50, 200), getRandomInt(100, 150), getRandomInt(150, 250)],
-            backgroundColor: [
-                '#36A2EB',
-                '#00FF00',
-                '#CCC'
-            ],
-            hoverBackgroundColor: [
-                '#36A2EB',
-                '#00FF00',
-                '#CCC'
-            ]
-        }]
-
-});
-
-const initialState = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-        {
-            label: 'Nombres de détritus jetées',
-            fill: false,
-            lineTension: 0.1,
-            backgroundColor: 'rgba(75,192,192,0.4)',
-            borderColor: 'rgba(75,192,192,1)',
-            borderCapStyle: 'butt',
-            borderDash: [],
-            borderDashOffset: 0.0,
-            borderJoinStyle: 'miter',
-            pointBorderColor: 'rgba(75,192,192,1)',
-            pointBackgroundColor: '#fff',
-            pointBorderWidth: 1,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-            pointHoverBorderColor: 'rgba(220,220,220,1)',
-            pointHoverBorderWidth: 2,
-            pointRadius: 1,
-            pointHitRadius: 10,
-            data: [65, 59, 80, 81, 56, 55, 40]
-        }
-    ]
-};
 
 export default class Client extends React.Component {
-
     constructor(props){
         super(props);
+        let data = require('../json/database.json');
         this.state = {
             menu : {
                 poubelle : true,
                 trie:false,
                 afluance:false
             },
-           pie: getState(),
-            line: initialState,
-            bar:dataBar,
             idGraph:0,
             pageMenu : {
                 poubelles:1,
@@ -136,171 +64,25 @@ export default class Client extends React.Component {
             center_graph:{
                 lat:43.71995511362731,
                 long:7.276731660849009
-            }
+            },
+            database :data
         };
-    }
-
-    componentWillMount() {
-        setInterval(() => {
-            this.setState({pie:getState()});
-        }, 5000);
-    };
-
-    componentDidMount(){
-
-        let _this = this;
-
-        setInterval(function(){
-            let oldDataSet = _this.state.line.datasets[0];
-            let newData = [];
-
-            for(let x=0; x< _this.state.line.labels.length; x++){
-                newData.push(Math.floor(Math.random() * 100));
-            }
-
-            var newDataSet = {
-                ...oldDataSet
-            };
-
-            newDataSet.data = newData;
-
-            var line = {
-                ...initialState,
-                datasets: [newDataSet]
-            };
-
-            _this.setState({line:line});
-        }, 5000);
+        console.log(data);
     }
 
 
-    /*
-    TODO transfromation pour l'automatisation
-     */
-        listGraph(){ return [
-            {
-                nomAdr:"Jardin des Arènes de Cimiez",
-                lat:43.71995511362731,
-                long:7.276731660849009,
-                zoom:18,
-                elements:{
-                    poubelles : [
-                    {
-                            nom:"P1",
-                            direction:"se dirige vers Z3",
-                            battery :100,
-                            charge:25,
-                            isCharging:false,
-                            graph : {
-                                lat:43.71989225310265,
-                                long:7.275623913033314,
-                            }
-                    },{
-                            nom:"P2",
-                            direction:"s'occupe de Z1",
-                            battery :80,
-                            charge:50,
-                            isCharging:false,
-                            graph : {
-                                lat:43.7199628471185,
-                                long:7.276885068490628,
-                            }
-                    },{
-                            nom:"P3",
-                            direction:"s'occupe de Z2",
-                            battery :20,
-                            charge:75,
-                            isCharging:false,
-                            graph : {
-                                lat:43.72002391515392,
-                                long:7.278003658367197,
-                            }
-                    },{
-                            nom:"P4",
-                            direction:"se vide et se charge",
-                            battery :50,
-                            charge:100,
-                            isCharging:true,
-                            graph : {
-                                lat:43.72076565945867,
-                                long:7.277072369436269,
-                            }
-                    }, {
-                            nom: "P5",
-                            direction: "suit un parcours prédéfinis",
-                            battery: 30,
-                            charge: 25,
-                            isCharging: false,
-                            graph: {
-                                lat: 43.72038439661712,
-                                long: 7.277138044431808,
-                            }
-                        }
-                    ],
-                    zoneDetries:[
-                        {
-                            nom:"T1",
-                            nbPoubelleDansZone:1,
-                            dataPie:this.state.pie,
-                            dataLine:this.state.line,
-                            graph:{
-                                lat:43.72076565945867,
-                                long:7.277072369436269
-                            }
-                        }
-                    ],
-                    zoneDAfluence:[
-                        {
-                            nom:"A1",
-                            nbPoubelleDansZone:1,
-                            dataBar:this.state.bar,
-                            graph : {
-                                lat:43.71995511362731,
-                                long:7.276731660849009,
-                                diametre:100
-                            }
-                        },
-                        {
-                            nom:"A2",
-                            nbPoubelleDansZone:1,
-                            dataBar:this.state.bar,
-                            graph : {
-                                lat:43.720105641533365,
-                                long:7.277928739864365,
-                                diametre:40
-                            }
-                        },
-                        {
-                            nom:"A3",
-                            nbPoubelleDansZone:0,
-                            dataBar:this.state.bar,
-                            graph : {
-                                lat:43.72058731928579,
-                                long:7.277028112987523,
-                                diametre:60
-                            }
-                        },
-                    ],
-                }
-            }
-        ];
-        }
-    /*
-    TODO finish
-     */
-
-    listPoubelle(id){
-            return this.listGraph()[id].elements.poubelles;
+    listPoubelle(){
+            return this.state.database.elements.poubelles;
         }
 
 
-    listZoneTrie(id){
-        return this.listGraph()[id].elements.zoneDetries;
+    listZoneTrie(){
+        return this.state.database.elements.zoneDetries;
     }
 
 
-    listZoneAfluance(id){
-        return this.listGraph()[id].elements.zoneDAfluence;
+    listZoneAfluance(){
+        return this.state.database.elements.zoneDAfluence;
     }
 
     _onChangeCenterMap(lat,long){
@@ -571,8 +353,8 @@ export default class Client extends React.Component {
         ));
 
         const centerMapDefault = {
-            lat:this.listGraph()[this.state.idGraph].lat,
-            lng:this.listGraph()[this.state.idGraph].long
+            lat:this.state.database.lat,
+            lng:this.state.database.long
         };
 
         const centerMap={
@@ -590,14 +372,14 @@ export default class Client extends React.Component {
                         <Select options={optionsParc} selected={optionsParc[0]} value={optionsParc[0]}/>
                     </div>
                 </div>
-                <h3 style={{textAlign:"center"}}>{this.listGraph()[this.state.idGraph].nomAdr}</h3>
+                <h3 style={{textAlign:"center"}}>{this.state.database.nomAdr}</h3>
                 <div style={{display:"flex"}}>
                     <div style={{ height: '80vh', width: '60%' }}>
                         <GoogleMapReact
                             bootstrapURLKeys={{ key: "AIzaSyDv33SIPUfRDQShB-PJA7pzjwCsnFnZ6mY"}}
                             centerMapDefault={centerMapDefault}
                             center={centerMap}
-                            defaultZoom={this.listGraph()[this.state.idGraph].zoom}
+                            defaultZoom={this.state.database.zoom}
                         >
                             {ZoneInfluenceDisplayGraph}
 

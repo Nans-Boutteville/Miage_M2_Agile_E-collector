@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "chart.js": "^2.7.3",
+    "edit-json-file": "^1.2.1",
+    "firebase": "^5.7.3",
     "google-map-react": "^1.1.1",
     "prop-types": "^15.6.2",
     "rc-menu": "^7.4.20",
